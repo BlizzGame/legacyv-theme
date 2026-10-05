@@ -1,0 +1,115 @@
+/**
+ * @name LegacyV
+ * @version 1.0.0
+ * @description LegacyV Design for Better Discord and Vencord
+ * @author Blizz Development
+ * @invite blizzmusic
+ * @source https://github.com/BlizzGame/legacyv-theme
+ * @website https://github.com/BlizzGame/legacyv-theme
+ */
+
+/* ============================================================
+   IMPORTS  (Reihenfolge nicht aendern: Kern -> Font -> Code -> Status)
+   Alle Dateien liegen im Repo und werden ueber jsDelivr ausgeliefert.
+   ============================================================ */
+@import url("https://cdn.jsdelivr.net/gh/BlizzGame/legacyv-theme@main/core/legacyv.css");
+@import url("https://cdn.jsdelivr.net/gh/BlizzGame/legacyv-theme@main/core/custom-font.css");
+@import url("https://cdn.jsdelivr.net/gh/BlizzGame/legacyv-theme@main/core/hljs.css"); /* Codebloecke */
+@import url("https://cdn.jsdelivr.net/gh/BlizzGame/legacyv-theme@main/core/watermark.css"); /* LV-Logo im Chat */
+@import url("https://DiscordStyles.github.io/RadialStatus/RadialStatus.css"); /* Radial Status */
+
+/*
+██╗     ███████╗ ██████╗  █████╗  ██████╗██╗   ██╗██╗   ██╗
+██║     ██╔════╝██╔════╝ ██╔══██╗██╔════╝╚██╗ ██╔╝██║   ██║
+██║     █████╗  ██║  ███╗███████║██║      ╚████╔╝ ██║   ██║
+██║     ██╔══╝  ██║   ██║██╔══██║██║       ╚██╔╝  ╚██╗ ██╔╝
+███████╗███████╗╚██████╔╝██║  ██║╚██████╗   ██║    ╚████╔╝
+╚══════╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝   ╚═╝     ╚═══╝
+*/
+
+:root {
+
+  /* -- FARB-PRESETS --------------------------------------------------
+     Aktiv ist "LegacyV Purple" (Farben des LV Loadingscreens).
+     Anderes Preset nutzen: den Block darunter auskommentieren und das
+     gewuenschte Preset einkommentieren (nur EIN Preset gleichzeitig). */
+
+  /* LegacyV Purple (Standard) */
+  --mainColor: #8b5cf6;
+  --mainColorLight: #d7c3ff;
+  --mainColorDark: #4c1d95;
+  --gradientColor01: #8b5cf6;
+  --gradientColor02: #d7c3ff;
+  --buttonGradient01: #4c1d95;
+  --buttonGradient02: #8b5cf6;
+  --backgroundColor01: #0b0712;
+  --backgroundColor02: #05030a;
+  --backgroundColor03: #020107;
+  --linkcolor: #c4a9ff;
+  --backgroundCode: #10021f;
+
+  /* LegacyV Neon (Magenta aus dem Logo)
+  --mainColor: #c026d3;
+  --mainColorLight: #f0abfc;
+  --mainColorDark: #6b21a8;
+  --gradientColor01: #c026d3;
+  --gradientColor02: #f0abfc;
+  --buttonGradient01: #6b21a8;
+  --buttonGradient02: #c026d3;
+  --backgroundColor01: #0d0613;
+  --backgroundColor02: #06030a;
+  --backgroundColor03: #020106;
+  --linkcolor: #f0abfc;
+  --backgroundCode: #14031f;
+  */
+
+  /* LegacyV Ice (kuehles Violett-Blau)
+  --mainColor: #6366f1;
+  --mainColorLight: #c7d2fe;
+  --mainColorDark: #312e81;
+  --gradientColor01: #6366f1;
+  --gradientColor02: #c7d2fe;
+  --buttonGradient01: #312e81;
+  --buttonGradient02: #6366f1;
+  --backgroundColor01: #0a0b14;
+  --backgroundColor02: #05050b;
+  --backgroundColor03: #020207;
+  --linkcolor: #a5b4fc;
+  --backgroundCode: #0d0e1f;
+  */
+
+  /* -- OBERFLAECHEN -- */
+  --backgroundName: rgba(0, 0, 0, .28);
+  --borderColor: rgba(210, 190, 255, .14);
+  --glassColor: rgba(11, 7, 18, .78);
+
+  /* -- WASSERZEICHEN (LV-Logo im Chat) --
+     Staerke: 0% = unsichtbar, 8% = dezent (Standard), 15% = deutlich */
+  --lv-watermark-strength: 8%;
+  --lv-watermark-size: min(62%, 560px);
+  --lv-watermark-position: center 46%;
+  /* Eigenes Bild verwenden (optional):
+  --lv-watermark-image: url("https://deine-domain/bild.png"); */
+
+  /* -- GRADIENTEN: true = Ueberschriften/Namen mit Farbverlauf, false = aus -- */
+  --toggle-gradient: true;
+
+  /* -- RADIAL STATUS -- */
+  --rs-small-spacing: 2px;
+  --rs-medium-spacing: 3px;
+  --rs-large-spacing: 3px;
+  --rs-width: 2px;
+  --rs-avatar-shape: 50%;
+  --rs-online-color: #22c55e;
+  --rs-phone-color: #22c55e;
+  --rs-idle-color: #f59e0b;
+  --rs-dnd-color: #ef4444;
+  --rs-offline-color: #64748b;
+  --rs-streaming-color: #8b5cf6;
+  --rs-invisible-color: #64748b;
+  --rs-phone-visible: block;
+
+  /* -- SCHRIFT -- */
+  --customFont: 'Inter', 'gg sans', sans-serif;
+  --displayFont: 'Sora', 'Inter', 'gg sans', sans-serif;
+}

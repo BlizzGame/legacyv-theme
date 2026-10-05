@@ -1,0 +1,95 @@
+/**
+ * LegacyV – Codebloecke
+ * Eigene, schlanke Variante (ohne Zeilennummern-Hack). Sprachlabel oben links,
+ * Syntaxfarben passend zur LegacyV-Palette.
+ */
+:root {
+  --backgroundCode: #10021f;
+  --backgroundName: rgba(0, 0, 0, .28);
+}
+
+[class*="markup_"] pre {
+  position: relative;
+  border-radius: 10px;
+  border: 1px solid var(--borderColor, rgba(210, 190, 255, .14));
+  overflow: hidden;
+}
+
+[class*="markup_"] code,
+[class*="markup_"] code.inline,
+[class*="markup_"] code.hljs,
+[class*="markup_"] code.hljs.inline,
+.hljs,
+[class*="textContainer_"],
+[class*="modalTextContainer_"],
+[class*="languageSelector_"],
+[class*="codeView_"] {
+  background: var(--backgroundCode) !important;
+  scrollbar-color: var(--mainColor) var(--backgroundName);
+}
+
+/* Inline-Code kompakt halten */
+[class*="markup_"] code.inline {
+  border-radius: 5px;
+  padding: .1em .4em;
+}
+
+/* Kopfleiste mit Sprachlabel (nur Bloecke) */
+[class*="markup_"] pre code.hljs {
+  padding-top: 30px !important;
+  position: relative;
+}
+[class*="markup_"] pre code.hljs::before {
+  content: "CODE";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 22px;
+  padding: 0 12px;
+  line-height: 22px;
+  font-family: var(--displayFont, 'Sora', sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--mainColorLight, #d7c3ff);
+  background: var(--backgroundName);
+  border-bottom: 1px solid var(--borderColor, rgba(210, 190, 255, .14));
+}
+
+/* Sprachlabels */
+code.hljs.js::before, code.hljs.javascript::before { content: "JavaScript"; }
+code.hljs.ts::before, code.hljs.typescript::before { content: "TypeScript"; }
+code.hljs.lua::before { content: "Lua"; }
+code.hljs.py::before, code.hljs.python::before { content: "Python"; }
+code.hljs.json::before { content: "JSON"; }
+code.hljs.css::before { content: "CSS"; }
+code.hljs.html::before, code.hljs.xml::before { content: "HTML / XML"; }
+code.hljs.sql::before { content: "SQL"; }
+code.hljs.bash::before, code.hljs.sh::before, code.hljs.shell::before { content: "Shell"; }
+code.hljs.cs::before, code.hljs.csharp::before { content: "C#"; }
+code.hljs.cpp::before { content: "C++"; }
+code.hljs.c::before { content: "C"; }
+code.hljs.java::before { content: "Java"; }
+code.hljs.php::before { content: "PHP"; }
+code.hljs.go::before { content: "Go"; }
+code.hljs.rust::before, code.hljs.rs::before { content: "Rust"; }
+code.hljs.yaml::before, code.hljs.yml::before { content: "YAML"; }
+code.hljs.ini::before, code.hljs.properties::before { content: "Config"; }
+code.hljs.diff::before { content: "Diff"; }
+code.hljs.markdown::before, code.hljs.md::before { content: "Markdown"; }
+
+/* Syntaxfarben */
+.hljs { color: #e9e2ff; }
+.hljs-comment, .hljs-quote { color: #7c6f99; font-style: italic; }
+.hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-doctag { color: #c4a9ff; }
+.hljs-string, .hljs-regexp, .hljs-addition { color: #86efac; }
+.hljs-number, .hljs-symbol, .hljs-bullet { color: #fbbf24; }
+.hljs-title, .hljs-section, .hljs-function .hljs-title { color: #d7c3ff; font-weight: 600; }
+.hljs-built_in, .hljs-type, .hljs-class .hljs-title { color: #f0abfc; }
+.hljs-attr, .hljs-attribute, .hljs-variable, .hljs-template-variable { color: #93c5fd; }
+.hljs-meta, .hljs-name, .hljs-tag { color: #a78bfa; }
+.hljs-deletion { color: #fca5a5; }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 700; }

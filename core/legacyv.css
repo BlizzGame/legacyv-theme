@@ -1,0 +1,540 @@
+/**
+ * LegacyV – Core
+ * Struktur angelehnt an das Nocturnal-Theme (Variablen-Layer -> Flaechen -> Komponenten),
+ * aber komplett eigenstaendig geschrieben.
+ *
+ * Selektoren nutzen bewusst [class*="name_"] statt fester Hash-Klassen
+ * (z. B. ".chatContent_f75fb0"), damit das Theme Discord-Updates uebersteht.
+ */
+
+/* ============================================================
+   1. FALLBACK-WERTE  (werden von LegacyV.theme.css ueberschrieben)
+   ============================================================ */
+:root {
+  --mainColor: #8b5cf6;
+  --mainColorLight: #d7c3ff;
+  --mainColorDark: #4c1d95;
+  --gradientColor01: #8b5cf6;
+  --gradientColor02: #d7c3ff;
+  --buttonGradient01: #4c1d95;
+  --buttonGradient02: #8b5cf6;
+  --backgroundColor01: #0b0712;
+  --backgroundColor02: #05030a;
+  --backgroundColor03: #020107;
+  --linkcolor: #c4a9ff;
+  --backgroundCode: #10021f;
+  --backgroundName: rgba(0, 0, 0, .28);
+  --borderColor: rgba(210, 190, 255, .14);
+  --glassColor: rgba(11, 7, 18, .78);
+  --lv-ease: cubic-bezier(.16, 1, .3, 1);
+}
+
+/* ============================================================
+   2. DISCORD-VARIABLEN-LAYER  (wie bei Nocturnal, aber auf LegacyV-Farben)
+   ============================================================ */
+.theme-dark,
+.theme-darker,
+.theme-midnight,
+.theme-amoled,
+.visual-refresh .theme-dark {
+  /* Flaechen */
+  --background-base-lowest: var(--backgroundColor03) !important;
+  --background-base-lower: var(--backgroundColor02) !important;
+  --background-base-low: var(--backgroundColor01) !important;
+  --background-surface-high: var(--backgroundColor02) !important;
+  --background-surface-higher: var(--backgroundColor01) !important;
+  --background-surface-highest: var(--backgroundColor01) !important;
+  --chat-background-default: var(--backgroundColor01) !important;
+  --background-primary: var(--backgroundColor01) !important;
+  --background-secondary: var(--backgroundColor02) !important;
+  --background-secondary-alt: var(--backgroundColor02) !important;
+  --background-tertiary: var(--backgroundColor03) !important;
+  --background-floating: var(--backgroundColor02) !important;
+
+  /* Hover / Auswahl */
+  --background-mod-subtle: rgba(139, 92, 246, .08);
+  --background-mod-normal: rgba(139, 92, 246, .14);
+  --background-mod-strong: rgba(139, 92, 246, .22);
+  --background-mod-muted: var(--backgroundCode);
+  --background-modifier-hover: rgba(139, 92, 246, .10);
+  --background-modifier-selected: rgba(139, 92, 246, .18);
+  --background-modifier-accent: var(--borderColor);
+  --control-secondary-background-default: var(--backgroundColor01);
+  --control-secondary-background-hover: var(--backgroundName);
+
+  /* Marken-Farbe (ersetzt Blurple) */
+  --brand-500: var(--mainColor) !important;
+  --brand-560: var(--mainColorDark) !important;
+  --background-brand: var(--mainColor) !important;
+  --brand-experiment: var(--mainColor) !important;
+  --brand-experiment-560: var(--mainColorDark) !important;
+  --text-brand: var(--mainColorLight) !important;
+  --text-link: var(--linkcolor) !important;
+  --mention-foreground: var(--mainColorLight);
+  --mention-background: rgba(139, 92, 246, .22);
+  --control-brand-foreground: var(--mainColor);
+  --control-brand-foreground-new: var(--mainColor);
+  --focus-primary: var(--mainColorLight);
+
+  /* Rahmen / Trenner */
+  --border-subtle: var(--borderColor);
+  --border-normal: var(--borderColor);
+  --border-strong: rgba(210, 190, 255, .24);
+  --primary-500: white;
+
+  /* Status (identisch zum Loadingscreen) */
+  --status-online: #22c55e;
+  --status-idle: #f59e0b;
+  --status-dnd: #ef4444;
+  --status-offline: #64748b;
+}
+
+/* Auswahlfarbe */
+::selection {
+  background: rgba(139, 92, 246, .45);
+  color: #fff;
+}
+
+/* ============================================================
+   3. SCHRIFT & BASIS
+   ============================================================ */
+body {
+  background: var(--backgroundColor03);
+}
+
+/* Glow-Vignette wie im Loadingscreen (hinter allem, klickt nicht durch) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 120px rgba(2, 1, 7, .55);
+}
+
+/* Titelleiste: Wortmarke ersetzen */
+[class*="wordmark"] {
+  font-size: 0 !important;
+  position: relative;
+}
+[class*="wordmark"] > * {
+  display: none !important;
+}
+[class*="wordmark"]::after {
+  content: "LEGACYV";
+  font-family: var(--displayFont, 'Sora', sans-serif);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.2px;
+  background: linear-gradient(90deg, var(--gradientColor02), var(--gradientColor01));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================================
+   4. LAYOUT-FLAECHEN  (Server-Leiste, Kanalliste, Mitglieder, Panels)
+   ============================================================ */
+[class*="sidebar_"],
+[class*="privateChannels_"],
+[class*="membersWrap_"],
+[class*="members_"] {
+  background: var(--backgroundColor02);
+}
+
+[class*="members_"] > div,
+[class*="container_"][class*="members"] {
+  background: transparent;
+}
+
+/* Nutzer-Panel unten links, leicht abgehoben */
+[class*="panels_"] {
+  background: var(--backgroundColor02);
+  border-top: 1px solid var(--borderColor);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, .35);
+}
+
+/* Kopfzeile des Chats */
+[class*="chat_"] > [class*="subtitleContainer_"],
+[class*="chat_"] [class*="title_"][class*="container"] {
+  background: var(--glassColor);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--borderColor);
+  box-shadow: none;
+}
+
+/* Kanal- und DM-Eintraege */
+[class*="sidebar_"] [class*="interactive_"],
+[class*="privateChannels_"] [class*="interactive_"] {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: background .2s var(--lv-ease);
+}
+
+/* Gleitender Gradient-Strich beim Hover / bei Auswahl (wie bei Nocturnal) */
+[class*="sidebar_"] [class*="interactive_"]::after,
+[class*="privateChannels_"] [class*="interactive_"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  border-radius: 50px;
+  background: linear-gradient(90deg, var(--buttonGradient01), var(--gradientColor01), var(--gradientColor02));
+  transform: translateX(-101%);
+  transition: transform .25s var(--lv-ease);
+  pointer-events: none;
+}
+[class*="sidebar_"] [class*="interactive_"]:hover::after,
+[class*="sidebar_"] [class*="interactiveSelected_"]::after,
+[class*="privateChannels_"] [class*="interactive_"]:hover::after,
+[class*="privateChannels_"] [class*="interactiveSelected_"]::after {
+  transform: translateX(0);
+}
+
+[class*="interactiveSelected_"] {
+  background: linear-gradient(90deg, rgba(139, 92, 246, .24), rgba(139, 92, 246, .04)) !important;
+  box-shadow: inset 3px 0 0 var(--mainColor);
+}
+[class*="interactive_"]:hover:not([class*="interactiveSelected_"]) {
+  background: rgba(139, 92, 246, .10) !important;
+}
+
+/* Ungelesen-Punkt mit Puls */
+[class*="unread_"] {
+  background-color: var(--mainColorLight) !important;
+  box-shadow: 0 0 8px var(--mainColor);
+}
+
+/* Server-Symbole */
+[class*="wrapper_"][class*="selected"] [class*="pill_"] span,
+[class*="item_"] [class*="pill_"] span {
+  background-color: var(--mainColorLight) !important;
+}
+
+/* ============================================================
+   5. CHAT
+   ============================================================ */
+[class*="messagesWrapper_"],
+[class*="scrollerContent_"],
+[class*="messagesWrapper_"] [class*="scrollerBase_"] {
+  background: transparent;
+}
+
+/* Nachrichten-Hover */
+.theme-dark [class*="message_"]:hover,
+.theme-dark [class*="message_"][class*="selected_"] {
+  background-color: rgba(139, 92, 246, .06) !important;
+}
+
+/* Erwaehnungen */
+[class*="mentioned_"] {
+  background-color: rgba(139, 92, 246, .12) !important;
+  border-radius: 0 8px 8px 0;
+}
+[class*="mentioned_"]::before {
+  background: linear-gradient(180deg, var(--gradientColor02), var(--gradientColor01)) !important;
+  width: 4px !important;
+  border-radius: 8px 0 0 8px;
+}
+
+/* Antworten */
+[class*="replying_"],
+[class*="highlighted_"] {
+  background-color: rgba(139, 92, 246, .14) !important;
+}
+[class*="replying_"]::before {
+  background: var(--mainColor) !important;
+}
+
+/* Eingabefeld */
+[class*="channelTextArea_"] {
+  background: var(--backgroundColor02) !important;
+  border: 1px solid var(--borderColor);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .25), inset 0 1px 0 rgba(255, 255, 255, .04);
+  transition: border-color .25s var(--lv-ease), box-shadow .25s var(--lv-ease);
+}
+[class*="channelTextArea_"]:focus-within {
+  border-color: rgba(196, 169, 255, .45);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, .35), 0 10px 30px rgba(0, 0, 0, .25);
+}
+
+/* Reaktionen */
+[class*="reaction_"] {
+  background: rgba(139, 92, 246, .08) !important;
+  border: 1px solid transparent !important;
+}
+[class*="reaction_"][class*="reactionMe_"] {
+  background: rgba(139, 92, 246, .30) !important;
+  border-color: rgba(196, 169, 255, .45) !important;
+}
+[class*="reaction_"]:hover {
+  background: rgba(139, 92, 246, .18) !important;
+}
+
+/* Embeds & Anhaenge */
+[class*="embedFull_"],
+[class*="embedWrapper_"] [class*="grid_"],
+[class*="fileWrapper_"],
+[class*="wrapperAudio_"],
+[class*="autocomplete_"] {
+  background: var(--glassColor) !important;
+  border-color: var(--borderColor) !important;
+}
+
+/* Links */
+[class*="markup_"] a,
+[class*="anchor_"] {
+  color: var(--linkcolor) !important;
+}
+[class*="markup_"] a:hover {
+  color: var(--mainColorLight) !important;
+}
+
+/* Mentions im Text (@user / #channel) */
+.mention,
+[class*="mention_"] {
+  background: rgba(139, 92, 246, .22) !important;
+  color: var(--mainColorLight) !important;
+}
+.mention:hover,
+[class*="mention_"]:hover {
+  background: var(--mainColor) !important;
+  color: #fff !important;
+}
+
+/* "Neue Nachrichten"-Leiste */
+[class*="newMessagesBar_"],
+[class*="newTopicsBarContainer_"] {
+  background: linear-gradient(135deg, var(--buttonGradient01), var(--buttonGradient02)) !important;
+}
+
+/* ============================================================
+   6. BUTTONS, SCHALTER, SLIDER
+   ============================================================ */
+[class*="lookFilled_"][class*="colorBrand_"],
+.vc-btn-primary {
+  background: linear-gradient(135deg, var(--buttonGradient01), var(--buttonGradient02)) !important;
+  color: #fff !important;
+  border: 0 !important;
+  box-shadow: 0 0 16px rgba(139, 92, 246, .35);
+  transition: box-shadow .25s var(--lv-ease), filter .25s var(--lv-ease), transform .15s var(--lv-ease);
+}
+[class*="lookFilled_"][class*="colorBrand_"]:hover,
+.vc-btn-primary:hover {
+  filter: brightness(1.12);
+  box-shadow: 0 0 22px rgba(139, 92, 246, .55);
+}
+[class*="lookFilled_"][class*="colorBrand_"]:active {
+  transform: translateY(1px);
+}
+
+[class*="lookFilled_"][class*="colorPrimary_"] {
+  background: var(--backgroundColor01) !important;
+  border: 1px solid var(--borderColor) !important;
+}
+[class*="lookFilled_"][class*="colorPrimary_"]:hover {
+  background: rgba(139, 92, 246, .14) !important;
+}
+
+[class*="lookOutlined_"][class*="colorBrand_"] {
+  color: var(--mainColorLight) !important;
+  border-color: var(--mainColor) !important;
+}
+
+/* Toggle-Schalter (Discord, BetterDiscord, Vencord) */
+[class*="switchIndicator_"]:not([style*="rgba(0, 0, 0, 0.12)"]),
+[class*="control_"] [class*="container_"][style*="rgb(35, 165, 90)"],
+#app-mount .bd-switch input:checked + .bd-switch-body,
+.vc-switch-checked {
+  background-color: var(--mainColor) !important;
+}
+
+/* Slider */
+[class*="barFill_"],
+[class*="grabber_"] {
+  background: var(--mainColor) !important;
+}
+
+/* Checkboxen / Radio */
+[class*="checkboxOption_"][data-selected] [class*="checkboxIndicator_"] {
+  background-color: var(--mainColor);
+}
+[class*="radioGroupOption_"][data-selected] [class*="outerRadioFill_"] {
+  fill: var(--mainColor);
+}
+
+/* ============================================================
+   7. MENUES, POPOUTS, TOOLTIPS  (Glas-Look)
+   ============================================================ */
+[class*="menu_"],
+[class*="layerContainer_"] [class*="popout_"],
+[class*="quickSelectPopout_"] {
+  background: var(--glassColor) !important;
+  backdrop-filter: blur(18px) saturate(1.2);
+  border: 1px solid var(--borderColor) !important;
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .05);
+}
+
+[class*="item_"][class*="focused_"],
+[class*="colorDefault_"][class*="focused_"] {
+  background: linear-gradient(135deg, var(--buttonGradient01), var(--buttonGradient02)) !important;
+  color: #fff !important;
+}
+[class*="colorDanger_"][class*="focused_"] {
+  background: #ef4444 !important;
+}
+
+[class*="tooltip_"] {
+  background: var(--backgroundColor02) !important;
+  border: 1px solid var(--borderColor);
+  color: #fff;
+}
+[class*="tooltipPointer_"] {
+  border-top-color: var(--backgroundColor02) !important;
+}
+
+/* Strg+K / Schnellsuche */
+[class*="quickswitcher_"],
+[class*="result_"][aria-selected="true"],
+[class*="result_"]:hover {
+  background: rgba(139, 92, 246, .22);
+}
+
+/* ============================================================
+   8. MODALS, EINSTELLUNGEN, PROFILE
+   ============================================================ */
+[class*="modal_"],
+[class*="root_"][class*="modal"],
+[class*="standardSidebarView_"],
+[class*="contentRegion_"],
+[class*="contentRegionScroller_"],
+[class*="sidebarRegion_"] {
+  background: var(--backgroundColor02);
+  border-color: var(--borderColor);
+}
+
+[class*="card_"],
+[class*="settingsCard_"],
+[class*="formNotice_"] {
+  background: var(--backgroundColor01);
+  border-color: var(--borderColor);
+}
+
+/* Profil-Popout */
+[class*="userPopoutOuter_"],
+[class*="userProfileOuter_"] {
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px var(--borderColor), 0 24px 60px rgba(0, 0, 0, .55);
+}
+
+/* Bot-Tags */
+[class*="botTag"] {
+  background: linear-gradient(135deg, var(--buttonGradient01), var(--buttonGradient02)) !important;
+  color: #fff !important;
+}
+
+/* ============================================================
+   9. SCROLLBARS
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track-piece {
+  background: transparent !important;
+  border: none !important;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--mainColorDark), var(--mainColor)) !important;
+  border: 2px solid transparent !important;
+  background-clip: padding-box !important;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--mainColor), var(--mainColorLight)) !important;
+  background-clip: padding-box !important;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ============================================================
+   10. GRADIENT-TEXT  (schaltbar ueber --toggle-gradient)
+   ============================================================ */
+@container style(--toggle-gradient: true) {
+  body {
+    --lv-text-gradient: linear-gradient(to right, var(--gradientColor02) 0%, var(--gradientColor01) 100%);
+    --lv-bg-clip: text;
+    --lv-text-fill: transparent;
+  }
+}
+
+[class*="titleWrapper_"],
+[class*="membersGroup_"] [class*="name"],
+[class*="membersGroup_"],
+[class*="headerText_"][class*="header"],
+[class*="modeSelected_"] [class*="name_"],
+[class*="modeConnected_"] [class*="name_"] {
+  background: var(--lv-text-gradient, none);
+  -webkit-background-clip: var(--lv-bg-clip, border-box);
+  background-clip: var(--lv-bg-clip, border-box);
+  -webkit-text-fill-color: var(--lv-text-fill, currentColor);
+}
+
+/* ============================================================
+   11. VENCORD / BETTERDISCORD EIGENE UI
+   ============================================================ */
+.vc-card-base,
+.vc-settings-quickActions-pill,
+.vc-addon-card,
+#app-mount .bd-addon-list .bd-addon-card,
+#app-mount .bd-addon-list .bd-addon-header {
+  background-color: var(--backgroundColor01) !important;
+  border: 1px solid var(--borderColor) !important;
+}
+.vc-settings-quickActions-pill:hover {
+  background-color: var(--mainColor) !important;
+}
+.bd-toast {
+  background: var(--glassColor);
+  border: 1px solid var(--borderColor) !important;
+  backdrop-filter: blur(14px);
+}
+.bd-toast.toast-success {
+  background: linear-gradient(135deg, var(--buttonGradient01), var(--buttonGradient02));
+}
+.bd-modal-wrapper .bd-modal-inner {
+  background-color: var(--backgroundColor02) !important;
+}
+
+/* Vencord Spotify-Controls */
+#vc-spotify-player {
+  background: transparent !important;
+}
+[class*="barFill_"][class*="mini"],
+.vc-spotify-progress-bar > div {
+  background: linear-gradient(90deg, var(--mainColorDark), var(--mainColorLight)) !important;
+}
+
+/* ============================================================
+   12. SONSTIGES
+   ============================================================ */
+/* Gefahr-Optionen im Rechtsklick-Menue bleiben rot */
+[class*="colorDanger_"] [class*="label_"] {
+  color: #ef4444;
+}
+
+/* Reduzierte Bewegung respektieren */
+@media (prefers-reduced-motion: reduce) {
+  [class*="interactive_"]::after,
+  [class*="channelTextArea_"],
+  [class*="lookFilled_"] {
+    transition: none !important;
+  }
+}

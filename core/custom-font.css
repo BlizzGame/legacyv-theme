@@ -1,0 +1,26 @@
+/**
+ * LegacyV – Schrift
+ * Sora (Ueberschriften) + Inter (Fliesstext) wie im LV Loadingscreen.
+ * Schrift aendern: --customFont / --displayFont in LegacyV.theme.css setzen.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  --font-primary: var(--customFont, 'Inter'), "gg sans";
+  --font-display: var(--displayFont, 'Sora'), var(--customFont, 'Inter'), "gg sans";
+}
+
+::placeholder,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--customFont, 'Inter', 'gg sans', sans-serif) !important;
+}
+
+h1, h2, h3,
+[class*="title_"],
+[class*="headerText_"] {
+  font-family: var(--displayFont, 'Sora', sans-serif);
+}

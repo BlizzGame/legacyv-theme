@@ -1,0 +1,52 @@
+/**
+ * LegacyV – Wasserzeichen
+ * Das LV-Logo (aus dem Loadingscreen) liegt als dezentes Hintergrundbild im Chat.
+ *
+ * Technik: Zwei Hintergrundebenen am Chat-Container.
+ *   1) oben: halbtransparenter "Schleier" in der Chat-Farbe  -> steuert die Staerke
+ *   2) unten: das Logo (WebP mit Transparenz)
+ * Vorteil: kein Pseudo-Element, keine z-index-Probleme, Klicks werden nie blockiert.
+ *
+ * Anpassen in LegacyV.theme.css:
+ *   --lv-watermark-strength   (0% - 100%, Standard 8%)
+ *   --lv-watermark-size       (Standard min(62%, 560px))
+ *   --lv-watermark-position   (Standard center 46%)
+ *   --lv-watermark-image      (eigenes Bild per url(...))
+ */
+main[class*="chatContent_"],
+[class*="chatContent_"] {
+  /* Nachrichtenliste soll das Logo durchscheinen lassen */
+  --chat-background-default: transparent;
+
+  background-color: var(--backgroundColor01);
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgba(139, 92, 246, .10), transparent 55%),
+    linear-gradient(
+      color-mix(in srgb, var(--backgroundColor01) calc(100% - var(--lv-watermark-strength, 8%)), transparent),
+      color-mix(in srgb, var(--backgroundColor01) calc(100% - var(--lv-watermark-strength, 8%)), transparent)
+    ),
+    var(--lv-watermark-image, url("https://cdn.jsdelivr.net/gh/BlizzGame/legacyv-theme@main/assets/logo-watermark.webp"));
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: 0 0, 0 0, var(--lv-watermark-position, center 46%);
+  background-size: auto, auto, var(--lv-watermark-size, min(62%, 560px)) auto;
+}
+
+/* Fallback fuer Browser ohne color-mix(): feste Abdunklung */
+@supports not (color: color-mix(in srgb, red 50%, blue)) {
+  main[class*="chatContent_"],
+  [class*="chatContent_"] {
+    background-image:
+      linear-gradient(rgba(11, 7, 18, .92), rgba(11, 7, 18, .92)),
+      url("https://cdn.jsdelivr.net/gh/BlizzGame/legacyv-theme@main/assets/logo-watermark.webp");
+    background-position: 0 0, center 46%;
+    background-size: auto, min(62%, 560px) auto;
+  }
+}
+
+/* Auf schmalen Fenstern kleiner, damit es nicht den Text dominiert */
+@media (max-width: 900px) {
+  main[class*="chatContent_"],
+  [class*="chatContent_"] {
+    background-size: auto, auto, min(80%, 380px) auto;
+  }
+}
